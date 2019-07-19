@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "GameTemplate", "GameTemplate\GameTemplate.vcxproj", "{E192BB95-CA05-4797-BEEA-7D5343E35FCB}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "NetworkGame", "NetworkGame\NetworkGame.vcxproj"{E192BB95-CA05-4797-BEEA-7D5343E35FCB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
