@@ -104,6 +104,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Main\BoxCollision.cpp" />
     <ClCompile Include="Main\Bullet.cpp" />
+    <ClCompile Include="Main\BulletFactory.cpp" />
     <ClCompile Include="Main\BulletManager.cpp" />
     <ClCompile Include="Main\CollisionManager.cpp" />
     <ClCompile Include="Main\Enemy.cpp" />
@@ -269,6 +270,7 @@
     <ClInclude Include="Game.h" />
     <ClInclude Include="Main\BoxCollision.h" />
     <ClInclude Include="Main\Bullet.h" />
+    <ClInclude Include="Main\BulletFactory.h" />
     <ClInclude Include="Main\BulletManager.h" />
     <ClInclude Include="Main\CollisionManager.h" />
     <ClInclude Include="Main\Enemy.h" />

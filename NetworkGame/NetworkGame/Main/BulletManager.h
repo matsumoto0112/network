@@ -2,20 +2,23 @@
 
 #include <vector>
 #include <memory>
+#include "Utility/Math/Vector3.h"
+#include "Utility/Math/Quaternion.h"
 
 namespace Main {
 class Bullet;
+class BulletFactory;
+class ICollisionRegister;
 
 class BulletManager {
 public:
-    BulletManager();
+    BulletManager(ICollisionRegister& collisionRegister);
     ~BulletManager();
     /**
     * @brief オブジェクトの追加
-    * @param obj 追加するオブジェクト
     * @details 次回update時に追加される
     */
-    void registerBullet(std::unique_ptr<Bullet> obj);
+    void shoot(const Math::Vector3& position, const Math::Quaternion& rotate);
     void update(float delta);
     void draw();
 private:
@@ -23,6 +26,7 @@ private:
     using BulletContainer = std::vector<BulletPtr>;
     BulletContainer mBulletList;
     BulletContainer mAddBulletList;
+    std::unique_ptr<BulletFactory> mBulletFactory;
 };
 
 } //Main 

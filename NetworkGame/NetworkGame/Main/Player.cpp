@@ -22,8 +22,8 @@
 
 namespace Main {
 
-Player::Player(IBulletRegister& bulletRegister, ICollisionRegister& collisionRegister)
-    :GameObject(Transform(Math::Vector3(0, 0.0f, 0), Math::Quaternion(), Math::Vector3(3.0f,3.0f,3.0f))),
+Player::Player(IShooter& bulletRegister, ICollisionRegister& collisionRegister)
+    :GameObject(Transform(Math::Vector3(0, 0.0f, 0), Math::Quaternion(), Math::Vector3(3.0f, 3.0f, 3.0f))),
     mBoxCollision(std::make_unique<BoxCollision>(*this, Math::OBB3D())),
     mPlayerCamera(Graphics::CameraManager::getInstance().getCamera<Graphics::FPSCamera>(Define::CameraType::ThreeD)),
     mBulletRegister(bulletRegister),
@@ -80,8 +80,7 @@ void Player::update(float delta) {
         Math::Vector3 v = mPlayerCamera.getLookAt() - mPlayerCamera.getPosition();
         v.normalize();
         Math::Quaternion q = Math::Quaternion::createLookTarget(v.getNormal(), Math::Vector3::FORWORD);
-        Transform bulletTransform(mPlayerCamera.getPosition(), q, Math::Vector3(1.0f, 1.0f, 1.0f));
-        mBulletRegister.registerBullet(std::make_unique<Bullet>(bulletTransform, mCollisionRegister));
+        mBulletRegister.shoot(mPlayerCamera.getPosition(), q);
     }
 }
 

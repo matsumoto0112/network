@@ -42,7 +42,14 @@ MainServer::MainServer(std::unique_ptr<Network::GameServerThread> serverThread)
     Utility::PixelShaderResourceStorage* psResourceManager = Utility::ResourceManager::getInstance().getPixelShader();
     psResourceManager->importResource(Define::PixelShaderType::RedModel, Define::PixelShaderName::RED_MODEL);
 
-    mObjectManager = std::make_unique<Main::MainObjectManager>();
+    auto sendShootDataToClientFunc = [&](const Math::Vector3& position, const Math::Quaternion& rotate) {
+        Network::ShootData data;
+        data.shotPosition = position;
+        data.rotate = rotate;
+        mServerThread->sendMessage(data);
+    };
+
+    mObjectManager = std::make_unique<Main::MainObjectManager>(sendShootDataToClientFunc);
     mObjectManager->registerPlayer(std::make_unique<Main::Player>(*mObjectManager, *mObjectManager));
     mObjectManager->registerEnemy(std::make_unique<Main::Enemy>(*mObjectManager));
     mObjectManager->registerStage(std::make_unique<Main::Stage>());
@@ -63,6 +70,12 @@ void MainServer::update(float delta) {
         recieve.decode(mes);
         mObjectManager->recieveTransformData(recieve);
     };
+    auto recieveShootData = [&](const std::string& mes) {
+        Network::ShootData recieve;
+        recieve.decode(mes);
+        mObjectManager->shootOpponent(recieve.shotPosition, recieve.rotate);
+    };
+
 
     if (Device::GameDevice::getInstance().getInputManager().getMouse().getMouseDown(Input::MouseButton::Right)) {
         PostMessage(Device::GameDevice::getInstance().getWindow().getHWND(), WM_COMMAND, ID_SHOWCURSOR, 0);
@@ -84,6 +97,7 @@ void MainServer::update(float delta) {
             recieveTransformData(ss.str());
             break;
         case Network::DataType::Shot:
+            recieveShootData(ss.str());
             break;
         default:
             break;

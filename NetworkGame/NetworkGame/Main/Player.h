@@ -11,12 +11,12 @@ class FPSCamera;
 namespace Main {
 class Bullet;
 class BoxCollision;
-class IBulletRegister;
+class IShooter;
 class ICollisionRegister;
 
 class Player : public GameObject {
 public:
-    Player(IBulletRegister& bulletRegister, ICollisionRegister& collisionRegister);
+    Player(IShooter& bulletRegister, ICollisionRegister& collisionRegister);
     ~Player();
     virtual void update(float delta) override;
     virtual void draw() override;
@@ -25,7 +25,7 @@ private:
     std::shared_ptr<Graphics::Model> mPlayer;
     std::unique_ptr<BoxCollision> mBoxCollision;
     Graphics::FPSCamera& mPlayerCamera;
-    IBulletRegister& mBulletRegister;
+    IShooter& mBulletRegister;
     ICollisionRegister& mCollisionRegister;
 };
 

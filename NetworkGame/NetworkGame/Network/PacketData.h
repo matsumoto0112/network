@@ -66,10 +66,10 @@ public:
 };
 
 /**
-* @class ShotData
+* @class ShootData
 * @brief プレイヤーのショットデータ群
 */
-class ShotData : public IPacketDataEncoder, public IPacketDataDecoder {
+class ShootData : public IPacketDataEncoder, public IPacketDataDecoder {
 public:
     Math::Vector3 shotPosition;
     Math::Quaternion rotate;

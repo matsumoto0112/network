@@ -1,6 +1,7 @@
 #pragma once
 #include <memory>
 #include <vector>
+#include <functional>
 #include "Main/IBulletRegister.h"
 #include "Main/ICollisionRegister.h"
 
@@ -16,9 +17,10 @@ class BulletManager;
 class GameObject;
 class CollisionManager;
 
-class MainObjectManager :public IBulletRegister, public ICollisionRegister {
+class MainObjectManager :public IShooter, public ICollisionRegister {
+    using ShootSendOpponentFunc = std::function<void(const Math::Vector3&, const Math::Quaternion&)>;
 public:
-    MainObjectManager();
+    MainObjectManager(ShootSendOpponentFunc func);
     ~MainObjectManager();
 
     void registerPlayer(std::unique_ptr<Player> player);
@@ -29,7 +31,8 @@ public:
     void draw();
     Network::TransformData createTransformData() const;
     void recieveTransformData(const Network::TransformData& data);
-    virtual void registerBullet(std::unique_ptr<Bullet> bullet) override;
+    virtual void shoot(const Math::Vector3& position, const Math::Quaternion& rotate) override;
+    virtual void shootOpponent(const Math::Vector3& position, const Math::Quaternion& rotate);
     virtual void registerCollision(BoxCollision* collision) override;
 private:
     std::unique_ptr<Player> mPlayer;
@@ -37,6 +40,7 @@ private:
     std::unique_ptr<Stage> mStage;
     std::unique_ptr<BulletManager> mBulletManager;
     std::unique_ptr<CollisionManager> mCollisionManager;
+    ShootSendOpponentFunc mSendFunc;
 };
 
 } //Main 

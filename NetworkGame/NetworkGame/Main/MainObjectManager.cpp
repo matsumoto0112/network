@@ -11,9 +11,11 @@
 
 namespace Main {
 
-MainObjectManager::MainObjectManager()
-    :mBulletManager(std::make_unique<BulletManager>()),
-    mCollisionManager(std::make_unique<CollisionManager>()) {}
+MainObjectManager::MainObjectManager(ShootSendOpponentFunc func)
+    :mBulletManager(std::make_unique<BulletManager>(*this)),
+    mCollisionManager(std::make_unique<CollisionManager>()),
+    mSendFunc(func) {}
+
 
 MainObjectManager::~MainObjectManager() {}
 
@@ -61,8 +63,15 @@ void MainObjectManager::recieveTransformData(const Network::TransformData& data)
     mEnemy->recieveTransformData(data);
 }
 
-void MainObjectManager::registerBullet(std::unique_ptr<Bullet> bullet) {
-    mBulletManager->registerBullet(std::move(bullet));
+void MainObjectManager::shoot(const Math::Vector3& position, const Math::Quaternion& rotate) {
+    MY_ASSERTION(mSendFunc != nullptr, "ƒVƒ‡ƒbƒg‚ð‘ŠŽè‚É’Ê’m‚·‚éŠÖ”‚ª“o˜^‚³‚ê‚Ä‚¢‚Ü‚¹‚ñ");
+
+    mBulletManager->shoot(position, rotate);
+    mSendFunc(position, rotate);
+}
+
+void MainObjectManager::shootOpponent(const Math::Vector3& position, const Math::Quaternion& rotate) {
+    mBulletManager->shoot(position, rotate);
 }
 
 void MainObjectManager::registerCollision(BoxCollision* collision) {

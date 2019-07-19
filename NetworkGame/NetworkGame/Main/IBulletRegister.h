@@ -1,20 +1,22 @@
 #pragma once
 #include <memory>
+#include "Utility/Math/Vector3.h"
+#include "Utility/Math/Quaternion.h"
 
 namespace Main {
 class Bullet;
 /**
-* @class IBulletRegister
-* @brief 弾の追加インターフェース
+* @class IShooter
+* @brief 弾を撃つインターフェース
 */
-class IBulletRegister {
+class IShooter {
 public:
     /**
     * @brief デストラクタ
     */
-    virtual ~IBulletRegister() = default;
+    virtual ~IShooter() = default;
 
-    virtual void registerBullet(std::unique_ptr<Bullet> bullet) = 0;
+    virtual void shoot(const Math::Vector3& position, const Math::Quaternion& rotate) = 0;
 };
 
 } //Main 
