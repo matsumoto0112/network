@@ -7,9 +7,11 @@ namespace Main {
 * @brief ゲームオブジェクトにつけるタグ
 */
 enum class Tag {
+    NONE,
     Player,
     Enemy,
-    Bullet,
+    PlayerBullet,
+    OpponentBullet,
 };
 
 } //Main 

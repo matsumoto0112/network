@@ -25,8 +25,11 @@ public:
     void calculateOBBFromTransform();
     void checkCollide(BoxCollision& other);
     void noticeCollide();
+    void setColliderTransform(const Transform& transform) { mColliderTransform = transform; }
+    const Transform& getColliderTransform() const { return mColliderTransform; }
 private:
     Math::OBB3D mOBB;
+    Transform mColliderTransform;
     GameObject& mHolder;
     std::vector<GameObject*> mHittedObjectList;
 };

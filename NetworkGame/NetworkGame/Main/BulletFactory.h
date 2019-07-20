@@ -6,6 +6,7 @@
 namespace Main {
 class Bullet;
 class ICollisionRegister;
+enum class Tag;
 
 /**
 * @class BulletFactory
@@ -21,7 +22,7 @@ public:
     * @brief デストラクタ
     */
     ~BulletFactory();
-    std::unique_ptr<Bullet> createBullet(const Math::Vector3& position, const Math::Quaternion& rotate);
+    std::unique_ptr<Bullet> createBullet(const Math::Vector3& position, const Math::Quaternion& rotate, Tag tag);
 private:
     ICollisionRegister& mCollisionRegister;
 };

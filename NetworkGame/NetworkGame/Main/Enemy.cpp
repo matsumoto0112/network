@@ -11,10 +11,15 @@
 namespace Main {
 
 Enemy::Enemy(ICollisionRegister& collisionRegister)
-    :GameObject(Transform(Math::Vector3(0, 0, 0), Math::Quaternion(), Math::Vector3(3.0f, 3.0f, 3.0f))),
+    :GameObject(Transform(Math::Vector3(0, 0, 0), Math::Quaternion(), Math::Vector3(3.0f, 3.0f, 3.0f)), Tag::Enemy),
     mCollision(std::make_unique<BoxCollision>(*this, Math::OBB3D())) {
     //’·‚³‚ð’²®
-    mCollision->getOBB()->setLength(1, 2.0f);
+    Transform colliderTransform(Math::Vector3(0, 1, 0), Math::Quaternion(), Math::Vector3(1, 2, 1));
+    colliderTransform.setParent(&mTransform);
+    mCollision->setColliderTransform(colliderTransform);
+    //mCollision->getOBB()->setLength(1, 2.0f);
+    //mCollision->getOBB()->setPosition(Math::Vector3(0, 1, 0));
+
     collisionRegister.registerCollision(mCollision.get());
 
     Graphics::FBXLoader loader(Device::GameDevice::getInstance().getDirectX11Device());
@@ -23,7 +28,8 @@ Enemy::Enemy(ICollisionRegister& collisionRegister)
 
 Enemy::~Enemy() {}
 
-void Enemy::update(float delta) {}
+void Enemy::update(float delta) {
+}
 
 void Enemy::draw() {
     mModel->draw(mTransform);

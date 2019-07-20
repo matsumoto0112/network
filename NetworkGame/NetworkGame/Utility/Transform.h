@@ -33,14 +33,17 @@ public:
     * @brief À•W‚Ìæ“¾
     */
     const Math::Vector3& getPosition() const { return mPosition; }
+    Math::Vector3 getGlobalPostition() const;
     /**
     * @brief ‰ñ“]‚Ìæ“¾
     */
     const Math::Quaternion& getRotate() const { return mRotation; }
+    Math::Quaternion getGlobalRotate() const;
     /**
     * @brief ‘å‚«‚³‚Ìæ“¾
     */
     const Math::Vector3& getScale() const { return mScale; }
+    Math::Vector3 getGlobalScale() const;
     /**
     * @brief À•W‚Ìİ’è
     */

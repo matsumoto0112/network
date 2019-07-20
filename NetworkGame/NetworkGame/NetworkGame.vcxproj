@@ -278,7 +278,7 @@
     <ClInclude Include="Main\IBulletRegister.h" />
     <ClInclude Include="Main\ICollisionRegister.h" />
     <ClInclude Include="Main\MainObjectManager.h" />
-    <ClInclude Include="Main\ObjectTag.h" />
+    <ClInclude Include="Main\Tag.h" />
     <ClInclude Include="Main\Player.h" />
     <ClInclude Include="Main\Stage.h" />
     <ClInclude Include="Network\GameClientThread.h" />

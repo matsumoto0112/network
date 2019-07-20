@@ -11,7 +11,7 @@ class ICollisionRegister;
 
 class Bullet : public GameObject {
 public:
-    Bullet(Transform transform, ICollisionRegister& collisionRegister);
+    Bullet(Transform transform, Tag tag, ICollisionRegister& collisionRegister);
     virtual ~Bullet();
     virtual void update(float delta) override;
     virtual void draw() override;

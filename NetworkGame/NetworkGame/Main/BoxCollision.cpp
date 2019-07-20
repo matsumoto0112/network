@@ -4,7 +4,7 @@
 namespace Main {
 
 BoxCollision::BoxCollision(GameObject& holder, const Math::OBB3D& obb)
-    :mOBB(obb), mHolder(holder) {
+    :mOBB(obb), mColliderTransform(Transform()), mHolder(holder) {
     mHittedObjectList.clear();
 }
 
@@ -13,9 +13,9 @@ BoxCollision::~BoxCollision() {
 }
 
 void BoxCollision::calculateOBBFromTransform() {
-    mOBB.mPosition = mHolder.getTransform().getPosition();
+    mOBB.mPosition = mColliderTransform.getGlobalPostition();
 
-    Math::Quaternion q = mHolder.getTransform().getRotate();
+    Math::Quaternion q = mColliderTransform.getGlobalRotate();
     mOBB.mNormalDirect[0] = q.multiply(Math::Vector3::RIGHT);
     mOBB.mNormalDirect[1] = q.multiply(Math::Vector3::UP);
     mOBB.mNormalDirect[2] = q.multiply(Math::Vector3::FORWORD);

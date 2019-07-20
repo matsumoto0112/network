@@ -32,7 +32,7 @@ public:
     Network::TransformData createTransformData() const;
     void recieveTransformData(const Network::TransformData& data);
     virtual void shoot(const Math::Vector3& position, const Math::Quaternion& rotate) override;
-    virtual void shootOpponent(const Math::Vector3& position, const Math::Quaternion& rotate);
+    virtual void shootByOpponent(const Math::Vector3& position, const Math::Quaternion& rotate);
     virtual void registerCollision(BoxCollision* collision) override;
 private:
     std::unique_ptr<Player> mPlayer;

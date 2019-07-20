@@ -70,8 +70,8 @@ void MainObjectManager::shoot(const Math::Vector3& position, const Math::Quatern
     mSendFunc(position, rotate);
 }
 
-void MainObjectManager::shootOpponent(const Math::Vector3& position, const Math::Quaternion& rotate) {
-    mBulletManager->shoot(position, rotate);
+void MainObjectManager::shootByOpponent(const Math::Vector3& position, const Math::Quaternion& rotate) {
+    mBulletManager->shootByOpponent(position, rotate);
 }
 
 void MainObjectManager::registerCollision(BoxCollision* collision) {

@@ -73,13 +73,8 @@ void MainServer::update(float delta) {
     auto recieveShootData = [&](const std::string& mes) {
         Network::ShootData recieve;
         recieve.decode(mes);
-        mObjectManager->shootOpponent(recieve.shotPosition, recieve.rotate);
+        mObjectManager->shootByOpponent(recieve.shotPosition, recieve.rotate);
     };
-
-
-    if (Device::GameDevice::getInstance().getInputManager().getMouse().getMouseDown(Input::MouseButton::Right)) {
-        PostMessage(Device::GameDevice::getInstance().getWindow().getHWND(), WM_COMMAND, ID_SHOWCURSOR, 0);
-    }
 
     mObjectManager->update(delta);
     Network::TransformData data = mObjectManager->createTransformData();

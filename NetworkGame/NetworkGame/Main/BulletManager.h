@@ -19,6 +19,7 @@ public:
     * @details ŽŸ‰ñupdateŽž‚É’Ç‰Á‚³‚ê‚é
     */
     void shoot(const Math::Vector3& position, const Math::Quaternion& rotate);
+    void shootByOpponent(const Math::Vector3& position, const Math::Quaternion& rotate);
     void update(float delta);
     void draw();
 private:

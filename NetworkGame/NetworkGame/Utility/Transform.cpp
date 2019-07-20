@@ -14,6 +14,22 @@ Transform::Transform(const Math::Vector3& position,
 
 Transform::~Transform() {}
 
+Math::Vector3 Transform::getGlobalPostition() const {
+    if (!mParent)return mPosition;
+    return  mPosition + mParent->getGlobalPostition();
+}
+
+Math::Quaternion Transform::getGlobalRotate() const {
+    if (!mParent)return mRotation;
+    return mRotation * mParent->getGlobalRotate();
+}
+
+Math::Vector3 Transform::getGlobalScale() const {
+    if (!mParent)return mScale;
+    Math::Vector3 parent = mParent->getGlobalScale();
+    return Math::Vector3(mScale.x * parent.x, mScale.y * parent.y, mScale.z * parent.z);
+}
+
 Math::Matrix4x4 Transform::createSRTMatrix() const {
     if (mParent) {
         return  createLocalSRTMatrix() * mParent->createSRTMatrix();

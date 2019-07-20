@@ -23,13 +23,17 @@
 namespace Main {
 
 Player::Player(IShooter& bulletRegister, ICollisionRegister& collisionRegister)
-    :GameObject(Transform(Math::Vector3(0, 0.0f, 0), Math::Quaternion(), Math::Vector3(3.0f, 3.0f, 3.0f))),
+    :GameObject(Transform(Math::Vector3(0, 0.0f, 0), Math::Quaternion(), Math::Vector3(3.0f, 3.0f, 3.0f)), Tag::Player),
     mBoxCollision(std::make_unique<BoxCollision>(*this, Math::OBB3D())),
     mPlayerCamera(Graphics::CameraManager::getInstance().getCamera<Graphics::FPSCamera>(Define::CameraType::ThreeD)),
     mBulletRegister(bulletRegister),
     mCollisionRegister(collisionRegister) {
+    Transform colliderTransform;
+    colliderTransform.setParent(&mTransform);
     //’·‚³‚ð’²®
     mBoxCollision->getOBB()->setLength(1, 2.0f);
+    colliderTransform.setPosition(Math::Vector3(0, 1, 0));
+    mBoxCollision->setColliderTransform(colliderTransform);
     mCollisionRegister.registerCollision(mBoxCollision.get());
 
     mPlayer = Utility::ResourceManager::getInstance().getFBXModel()->getResource(Define::ModelType::Enemy);
@@ -88,6 +92,10 @@ void Player::draw() {
     mPlayer->draw(mTransform);
 }
 
-void Player::hit(GameObject& other) {}
+void Player::hit(GameObject& other) {
+    if (other.getTag() == Tag::OpponentBullet) {
+        std::cout << "Hit\n";
+    }
+}
 
 } //Main 

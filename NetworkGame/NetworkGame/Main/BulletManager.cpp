@@ -11,7 +11,11 @@ Main::BulletManager::~BulletManager() {
 }
 
 void Main::BulletManager::shoot(const Math::Vector3& position, const Math::Quaternion& rotate) {
-    mAddBulletList.emplace_back(mBulletFactory->createBullet(position, rotate));
+    mAddBulletList.emplace_back(mBulletFactory->createBullet(position, rotate,Tag::PlayerBullet));
+}
+
+void Main::BulletManager::shootByOpponent(const Math::Vector3& position, const Math::Quaternion& rotate) {
+    mAddBulletList.emplace_back(mBulletFactory->createBullet(position, rotate, Tag::OpponentBullet));
 }
 
 void Main::BulletManager::update(float delta) {

@@ -9,9 +9,12 @@
 
 namespace Main {
 
-Bullet::Bullet(Transform transform, ICollisionRegister& collisionRegister)
-    :GameObject(transform),
+Bullet::Bullet(Transform transform, Tag tag, ICollisionRegister& collisionRegister)
+    :GameObject(transform, tag),
     mCollision(std::make_unique<BoxCollision>(*this, Math::OBB3D())) {
+    Transform colliderTransform;
+    colliderTransform.setParent(&mTransform);
+    mCollision->setColliderTransform(colliderTransform);
     Math::OBB3D* obb = mCollision->getOBB();
     obb->setLength(0, 0.25f);
     obb->setLength(1, 0.25f);
@@ -40,8 +43,6 @@ void Bullet::draw() {
     mModel->draw(mTransform);
 }
 
-void Bullet::hit(GameObject& other) {
-    std::cout << "Hit!" << std::endl;
-}
+void Bullet::hit(GameObject& other) {}
 
 } //Main 
