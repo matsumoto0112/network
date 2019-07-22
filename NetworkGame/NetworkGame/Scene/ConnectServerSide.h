@@ -1,19 +1,15 @@
 #pragma once
 
-#include "Scene/IScene.h"
 #include <Windows.h>
+#include "Scene/ConnectSceneBase.h"
 
 namespace Window {
-class DialogWindow;
+class IWindowProc;
 } //Window 
 
 namespace Network {
 class GameServerThread;
 } //Network 
-
-namespace Graphics {
-class TextureString;
-} //Graphics 
 
 namespace Scene {
 
@@ -21,7 +17,7 @@ namespace Scene {
 * @class ConnectServerSide
 * @brief サーバー側のクライアント接続シーン
 */
-class ConnectServerSide :public IScene {
+class ConnectServerSide :public ConnectSceneBase {
 public:
     /**
     * @brief コンストラクタ
@@ -31,19 +27,6 @@ public:
     * @brief デストラクタ
     */
     ~ConnectServerSide();
-    /**
-    * @brief 更新
-    * @param delta 前フレームからの差分時間
-    */
-    virtual void update(float delta) override;
-    /**
-    * @brief シーンが終了しているか
-    */
-    virtual bool isEndScene() const override;
-    /**
-    * @brief 描画
-    */
-    virtual void draw() override;
     /**
     * @brief 終了時処理
     * @return 次のシーン
@@ -56,14 +39,9 @@ private:
     */
     void puchConnectButton(int port);
 private:
-    bool mIsSceneEnd; //!< シーンが終了しているか
-    bool mIsSelectConnect; //!< 接続を選択したか
-    //HWND mDlg; //!< ダイアログハンドル
-    Window::DialogWindow& mDialog;
-    std::unique_ptr<Graphics::TextureString> mStr; //!< 表示するUI文字列
     std::unique_ptr<Network::GameServerThread> mServerThread; //!< サーバースレッド
-//public:
-//    static HWND DLGHANDLE;
+    Window::IWindowProc* mConnectEventProc;
+    Window::IWindowProc* mConnectCancelEventProc;
 };
 
 } //Scene 

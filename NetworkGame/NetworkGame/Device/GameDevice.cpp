@@ -36,13 +36,14 @@ void GameDevice::finalize() {
 bool GameDevice::processDialogs(MSG* msg) {
     auto removeIt = std::remove_if(mRequiredProceccingDialogHandles.begin(), mRequiredProceccingDialogHandles.end(), [](auto&& dlg) {return dlg->isEnd(); });
     mRequiredProceccingDialogHandles.erase(removeIt, mRequiredProceccingDialogHandles.end());
-    /*for (auto&& dlg : mRequiredProceccingDialogHandles) {
-        if (IsDialogMessage(dlg->getHandle(), &msg)) {
+    for (auto&& dlg : mRequiredProceccingDialogHandles) {
+        if (IsDialogMessage(dlg->getHandle(), msg)) {
             return true;
         }
-    }*/
-    if (mRequiredProceccingDialogHandles.size() == 0)return false;
-    return mRequiredProceccingDialogHandles[0]->getHandle() && IsDialogMessage(mRequiredProceccingDialogHandles[0]->getHandle(), msg);
+    }
+    return false;
+    //if (mRequiredProceccingDialogHandles.size() == 0)return false;
+    //return mRequiredProceccingDialogHandles[0]->getHandle() && IsDialogMessage(mRequiredProceccingDialogHandles[0]->getHandle(), msg);
 }
 
 Window::DialogWindow& GameDevice::addDialog(std::unique_ptr<Window::DialogWindow> dlgWindow) {

@@ -121,6 +121,7 @@
     <ClCompile Include="Network\ServerSocket.cpp" />
     <ClCompile Include="Network\Socket.cpp" />
     <ClCompile Include="Network\SocketImpl.cpp" />
+    <ClCompile Include="Scene\ConnectSceneBase.cpp" />
     <ClCompile Include="Scene\ConnectServerSide.cpp" />
     <ClCompile Include="Scene\MainClient.cpp" />
     <ClCompile Include="Scene\MainServer.cpp" />
@@ -298,6 +299,7 @@
     <ClInclude Include="Network\SocketImpl.h" />
     <ClInclude Include="Resources\resource.h" />
     <ClInclude Include="Device\Window\Dialog\DialogProcedures.h" />
+    <ClInclude Include="Scene\ConnectSceneBase.h" />
     <ClInclude Include="Scene\ConnectServerSide.h" />
     <ClInclude Include="Scene\IScene.h" />
     <ClInclude Include="Scene\MainClient.h" />

@@ -48,6 +48,8 @@
 #include "Define/Path.h"
 #include "Device/Window/Procedure/LeftButtonDownProc.h"
 
+#include "Device/Window/Dialog/DialogProcedures.h"
+
 using namespace Graphics;
 using namespace Math;
 
@@ -69,6 +71,11 @@ private:
         window.setProcedureEvent(new Window::EndProc());
         window.setProcedureEvent(new Window::PrintFPSProc(hWnd, [&]() {mFPSStr.first = !mFPSStr.first; }));
         window.setProcedureEvent(new Window::LeftButtonDownProc([&]() {mGameDevice.getInputManager().getMouse().setCursorMode(Input::CursorMode::Hide); }));
+
+        Window::DialogProcedures::addProcedure(Window::DialogProcType::Client, new Window::DestroyProc());
+        Window::DialogProcedures::addProcedure(Window::DialogProcType::Client, new Window::CloseProc());
+        Window::DialogProcedures::addProcedure(Window::DialogProcType::Server, new Window::DestroyProc());
+        Window::DialogProcedures::addProcedure(Window::DialogProcType::Server, new Window::CloseProc());
 
         Graphics::GraphicsDeviceManager& device = mGameDevice.getDirectX11Device();
         Graphics::RenderTargetFactory factory(device);

@@ -17,43 +17,29 @@
 #include "Device/Graphics/Camera/CameraManager.h"
 #include "Define/Network.h"
 #include "Utility/Resource/ResourceManager.h"
+#include "Device/GameDevice.h"
+#include "Device/Window/Dialog/DialogWindow.h"
+#include "Device/Window/Dialog/DialogProcedures.h"
 
 namespace Scene {
 
 ConnectClientSide::ConnectClientSide()
-    :mIsSceneEnd(false), mIsSelectConnect(false),
-    mStr(std::make_unique<Graphics::TextureString>(
-        Device::GameDevice::getInstance().getDirectX11Device(),
-        "Connecting",
-        14,
-        "")) {
-
-    //ダイアログ作成
-    Window::DialogProcedures::mClientDlgProc.emplace_back(std::make_unique<Window::ClientConnectProc>(
+    : ConnectSceneBase(Device::GameDevice::getInstance().addDialog(
+        std::make_unique<Window::DialogWindow>(&Device::GameDevice::getInstance().getWindow(),
+            IDD_CLIENT, (DLGPROC)Window::DialogProcedures::ClientDlgProc))),
+    mConnectEventProc(nullptr) {
+    mConnectEventProc = Window::DialogProcedures::addProcedure(Window::DialogProcType::Client, new Window::ClientConnectProc(
         [&](const std::string& address, int port) {pushConnectButton(address, port); }));
-    Window::DialogProcedures::mClientDlgProc.emplace_back(std::make_unique<Window::CancelProc>(
-        [&]() {mIsSceneEnd = true; mIsSelectConnect = false; }));
-    Window::DialogProcedures::mClientDlgProc.emplace_back(std::make_unique<Window::DestroyProc>());
-    Window::DialogProcedures::mClientDlgProc.emplace_back(std::make_unique<Window::CloseProc>());
-    mDlg = CreateDialog((HINSTANCE)GetModuleHandle(NULL),
-        (LPSTR)IDD_CLIENT, NULL, (DLGPROC)Window::DialogProcedures::ClientDlgProc);
-    EnableMenuItem(GetSystemMenu(mDlg, NULL), SC_CLOSE, MF_GRAYED);
-    ShowWindow(mDlg, SW_SHOW);
+
+    mConnectCancelEventProc = Window::DialogProcedures::addProcedure(Window::DialogProcType::Client,new Window::CancelProc(
+        [&]() {mIsSceneEnd = true; mIsSelectConnect = false;  }));
 }
 
 ConnectClientSide::~ConnectClientSide() {
-    Window::DialogProcedures::mClientDlgProc.clear();
-}
-
-void ConnectClientSide::update(float delta) {}
-
-bool ConnectClientSide::isEndScene() const {
-    return mIsSceneEnd;
-}
-
-void ConnectClientSide::draw() {
-    Graphics::CameraManager::getInstance().setRenderingCamera(Define::CameraType::UI);
-    mStr->draw();
+    Window::DialogProcedures::removeProcedure(Window::DialogProcType::Client, mConnectEventProc);
+    mConnectEventProc = nullptr;
+    Window::DialogProcedures::removeProcedure(Window::DialogProcType::Client, mConnectCancelEventProc);
+    mConnectCancelEventProc = nullptr;
 }
 
 std::unique_ptr<IScene> ConnectClientSide::end() {
@@ -71,6 +57,7 @@ void ConnectClientSide::pushConnectButton(const std::string& address, int port) 
         mIsSceneEnd = true;
         mIsSelectConnect = false;
     };
+
     mClient->mConnectEvent = [&]() {
         mIsSceneEnd = true;
         mIsSelectConnect = true;
@@ -83,7 +70,7 @@ void ConnectClientSide::pushConnectButton(const std::string& address, int port) 
     fbx->importResource(Define::ModelType::Object, Define::ModelName::OBJECT_NAME);
     fbx->importResource(Define::ModelType::Enemy, Define::ModelName::ENEMY_NAME);
 
-    SendMessage(mDlg, WM_CLOSE, 0, 0);
+    mDialogWindow.close();
 }
 
 } //Scene 
