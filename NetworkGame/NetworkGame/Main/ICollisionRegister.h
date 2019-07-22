@@ -15,6 +15,7 @@ public:
     virtual ~ICollisionRegister() = default;
 
    virtual void registerCollision(BoxCollision* collision) = 0;
+   virtual void removeCollision(BoxCollision* collision) = 0;
 };
 
 

@@ -49,7 +49,7 @@ MainClient::MainClient(std::unique_ptr<Network::GameClientThread> clientThread)
     mObjectManager = std::make_unique<Main::MainObjectManager>(sendShootDataToServerFunc);
     mObjectManager->registerPlayer(std::make_unique<Main::Player>(*mObjectManager, *mObjectManager));
     mObjectManager->registerEnemy(std::make_unique<Main::Enemy>(*mObjectManager));
-    mObjectManager->registerStage(std::make_unique<Main::Stage>());
+    mObjectManager->registerStage(std::make_unique<Main::Stage>(*mObjectManager));
 
     Graphics::TextureLoader texLoader(Device::GameDevice::getInstance().getDirectX11Device());
     std::shared_ptr<Graphics::Texture> tex = texLoader.load(Define::Path::getInstance().texture() + "reticule.png");
@@ -78,6 +78,7 @@ void MainClient::update(float delta) {
     mClient->sendMessage(packet);
 
     std::list<std::string> recvMessages = mClient->getAllMessage();
+    
     for (auto&& mes : recvMessages) {
         std::stringstream ss(mes);
         Network::DataType type;

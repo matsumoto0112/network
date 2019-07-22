@@ -32,6 +32,7 @@ std::list<std::string> MessageBuffer::getAllMessage() {
     CriticalSection::Lock gurad(mBufferLock);
     std::list<std::string> res(mBuffer.size());
     std::copy(mBuffer.begin(), mBuffer.end(), res.begin());
+    mBuffer.clear();
     return res;
 }
 

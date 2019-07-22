@@ -23,7 +23,7 @@ public:
     void recieveTransformData(const Network::TransformData& data);
     virtual void hit(GameObject& other) override;
 private:
-    std::unique_ptr<Graphics::Model> mModel;
+    std::shared_ptr<Graphics::Model> mModel;
     std::unique_ptr<BoxCollision> mCollision;
 };
 

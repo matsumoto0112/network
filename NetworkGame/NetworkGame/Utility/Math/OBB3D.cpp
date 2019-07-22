@@ -21,14 +21,14 @@ namespace Math {
 bool OBB3D::isCollide(const OBB3D& other) const {
     //各方向ベクトル
     //自分のをまず計算する
-    Vector3 nae1 = mNormalDirect[0], ae1 = nae1 * mLength[0];
-    Vector3 nae2 = mNormalDirect[1], ae2 = nae2 * mLength[1];
-    Vector3 nae3 = mNormalDirect[2], ae3 = nae3 * mLength[2];
+    Vector3 nae1 = mNormalDirect[0], ae1 = nae1 * mLength.x;
+    Vector3 nae2 = mNormalDirect[1], ae2 = nae2 * mLength.y;
+    Vector3 nae3 = mNormalDirect[2], ae3 = nae3 * mLength.z;
 
     //相手のを計算する
-    Vector3 nbe1 = other.mNormalDirect[0], be1 = nbe1 * other.mLength[0];
-    Vector3 nbe2 = other.mNormalDirect[1], be2 = nbe2 * other.mLength[1];
-    Vector3 nbe3 = other.mNormalDirect[2], be3 = nbe3 * other.mLength[2];
+    Vector3 nbe1 = other.mNormalDirect[0], be1 = nbe1 * other.mLength.x;
+    Vector3 nbe2 = other.mNormalDirect[1], be2 = nbe2 * other.mLength.y;
+    Vector3 nbe3 = other.mNormalDirect[2], be3 = nbe3 * other.mLength.z;
 
     //中心との距離
     Vector3 interval = mPosition - other.mPosition;
@@ -145,9 +145,8 @@ void OBB3D::setNormal(int axis, const Math::Vector3& normal) {
     mNormalDirect[axis] = normal;
 }
 
-void OBB3D::setLength(int axis, float length) {
-    MY_ASSERTION(0 <= axis && axis < 3, "軸が不正な値です");
-    mLength[axis] = length;
+void OBB3D::setLength(const Math::Vector3& length) {
+    mLength = length;
 }
 
 } //Math 

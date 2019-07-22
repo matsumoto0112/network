@@ -111,6 +111,7 @@
     <ClCompile Include="Main\MainObjectManager.cpp" />
     <ClCompile Include="Main\Player.cpp" />
     <ClCompile Include="Main\Stage.cpp" />
+    <ClCompile Include="Main\Wall.cpp" />
     <ClCompile Include="Network\GameClientThread.cpp" />
     <ClCompile Include="Network\GameServerThread.cpp" />
     <ClCompile Include="Network\InetAddress.cpp" />
@@ -281,6 +282,7 @@
     <ClInclude Include="Main\Tag.h" />
     <ClInclude Include="Main\Player.h" />
     <ClInclude Include="Main\Stage.h" />
+    <ClInclude Include="Main\Wall.h" />
     <ClInclude Include="Network\GameClientThread.h" />
     <ClInclude Include="Network\GameServerThread.h" />
     <ClInclude Include="Network\InetAddress.h" />

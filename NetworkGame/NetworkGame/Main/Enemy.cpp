@@ -7,6 +7,7 @@
 #include "Network/PacketData.h"
 #include "Main/BoxCollision.h"
 #include "Main/ICollisionRegister.h"
+#include "Utility/Resource/ResourceManager.h"
 
 namespace Main {
 
@@ -17,13 +18,11 @@ Enemy::Enemy(ICollisionRegister& collisionRegister)
     Transform colliderTransform(Math::Vector3(0, 1, 0), Math::Quaternion(), Math::Vector3(1, 2, 1));
     colliderTransform.setParent(&mTransform);
     mCollision->setColliderTransform(colliderTransform);
-    //mCollision->getOBB()->setLength(1, 2.0f);
-    //mCollision->getOBB()->setPosition(Math::Vector3(0, 1, 0));
 
     collisionRegister.registerCollision(mCollision.get());
 
     Graphics::FBXLoader loader(Device::GameDevice::getInstance().getDirectX11Device());
-    mModel = loader.load(Define::ModelName::ENEMY_NAME);
+    mModel = Utility::ResourceManager::getInstance().getFBXModel()->getResource(Define::ModelType::Enemy);
 }
 
 Enemy::~Enemy() {}

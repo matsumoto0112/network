@@ -1,4 +1,5 @@
 #include "BulletManager.h"
+#include <algorithm>
 #include "Main/Bullet.h"
 #include "Main/BulletFactory.h"
 
@@ -11,7 +12,7 @@ Main::BulletManager::~BulletManager() {
 }
 
 void Main::BulletManager::shoot(const Math::Vector3& position, const Math::Quaternion& rotate) {
-    mAddBulletList.emplace_back(mBulletFactory->createBullet(position, rotate,Tag::PlayerBullet));
+    mAddBulletList.emplace_back(mBulletFactory->createBullet(position, rotate, Tag::PlayerBullet));
 }
 
 void Main::BulletManager::shootByOpponent(const Math::Vector3& position, const Math::Quaternion& rotate) {
@@ -26,6 +27,10 @@ void Main::BulletManager::update(float delta) {
         mBulletList.emplace_back(std::move(add));
     }
     mAddBulletList.clear();
+
+    auto removeIt = std::remove_if(mBulletList.begin(), mBulletList.end(), [](auto&& bullet) {return !bullet->isAlive(); });
+    mBulletList.erase(removeIt, mBulletList.end());
+    std::cout << mBulletList.size() << std::endl;
 }
 
 void Main::BulletManager::draw() {

@@ -8,7 +8,7 @@ struct OBB3D {
 public:
     Vector3 mPosition; //!< 位置
     std::array<Vector3, 3> mNormalDirect; //!< 各軸の方向ベクトル
-    std::array<float, 3> mLength; //!< 各軸の長さ
+    Vector3 mLength;
 public:
     /**
     * @brief デフォルトコンストラクタ
@@ -20,7 +20,7 @@ public:
     * @param normals 各軸の正規化された方向ベクトル
     * @param lengths 各軸の中心からの長さ
     */
-    OBB3D(const Vector3& position, const std::array<Vector3, 3>& normal, const std::array<float, 3>& length)
+    OBB3D(const Vector3& position, const std::array<Vector3, 3>& normal, const Vector3& length)
         :mPosition(position), mNormalDirect(normal), mLength(length) {}
     /**
     * @brief 衝突しているか
@@ -31,7 +31,7 @@ public:
 
     void setPosition(const Math::Vector3& position);
     void setNormal(int axis, const Math::Vector3& normal);
-    void setLength(int axis, float length);
+    void setLength(const Math::Vector3& length);
 };
 
 } //Math 

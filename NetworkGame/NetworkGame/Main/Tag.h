@@ -12,6 +12,7 @@ enum class Tag {
     Enemy,
     PlayerBullet,
     OpponentBullet,
+    Wall,
 };
 
 } //Main 

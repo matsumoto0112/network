@@ -10,20 +10,23 @@ class Model;
 } //Graphics
 
 namespace Main {
+class Wall;
+class ICollisionRegister;
 
 class Stage {
 public:
-    Stage();
+    Stage(ICollisionRegister& collisionRegister);
     ~Stage();
     void update(float delta);
     void draw();
 private:
-    std::unique_ptr<Graphics::Model> mFloor;
+    std::shared_ptr<Graphics::Model> mFloor;
     Transform mFloorTransform;
-    std::unique_ptr<Graphics::Model> mObjectModel;
+    std::shared_ptr<Graphics::Model> mObjectModel;
     std::vector<Transform> mObjectTransforms;
     Graphics::Color4 mObjectColor;
     Math::Plane mFloorPlane;
+    std::array<std::unique_ptr<Wall>, 6> mWalls;
 };
 
 } //Main 

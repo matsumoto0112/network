@@ -32,4 +32,10 @@ void CollisionManager::registerCollision(BoxCollision* collision) {
     mBoxCollisionList.emplace_back(collision);
 }
 
+void CollisionManager::removeCollision(BoxCollision * collision) {
+    MY_ASSERTION(collision, "ƒRƒŠƒWƒ‡ƒ“‚Énull‚ª“n‚³‚ê‚Ü‚µ‚½");
+    auto removeIt = std::remove(mBoxCollisionList.begin(), mBoxCollisionList.end(), collision);
+    mBoxCollisionList.erase(removeIt, mBoxCollisionList.end());
+}
+
 } //Main 

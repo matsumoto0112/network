@@ -78,4 +78,8 @@ void MainObjectManager::registerCollision(BoxCollision* collision) {
     mCollisionManager->registerCollision(collision);
 }
 
+void MainObjectManager::removeCollision(BoxCollision* collision) {
+    mCollisionManager->removeCollision(collision);
+}
+
 } //Main 

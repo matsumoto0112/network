@@ -19,7 +19,7 @@ void BoxCollision::calculateOBBFromTransform() {
     mOBB.mNormalDirect[0] = q.multiply(Math::Vector3::RIGHT);
     mOBB.mNormalDirect[1] = q.multiply(Math::Vector3::UP);
     mOBB.mNormalDirect[2] = q.multiply(Math::Vector3::FORWORD);
-
+    mOBB.mLength = mColliderTransform.getGlobalScale();
 }
 
 void BoxCollision::checkCollide(BoxCollision& other) {

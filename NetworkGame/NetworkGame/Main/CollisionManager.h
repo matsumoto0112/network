@@ -23,6 +23,7 @@ public:
     void update();
 
     virtual void registerCollision(BoxCollision* collision) override;
+    virtual void removeCollision(BoxCollision* collision) override;
 private:
     std::vector<BoxCollision*> mBoxCollisionList;
 };

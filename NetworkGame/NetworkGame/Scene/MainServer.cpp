@@ -52,7 +52,7 @@ MainServer::MainServer(std::unique_ptr<Network::GameServerThread> serverThread)
     mObjectManager = std::make_unique<Main::MainObjectManager>(sendShootDataToClientFunc);
     mObjectManager->registerPlayer(std::make_unique<Main::Player>(*mObjectManager, *mObjectManager));
     mObjectManager->registerEnemy(std::make_unique<Main::Enemy>(*mObjectManager));
-    mObjectManager->registerStage(std::make_unique<Main::Stage>());
+    mObjectManager->registerStage(std::make_unique<Main::Stage>(*mObjectManager));
 
     Graphics::TextureLoader texLoader(Device::GameDevice::getInstance().getDirectX11Device());
     std::shared_ptr<Graphics::Texture> tex = texLoader.load(Define::Path::getInstance().texture() + "reticule.png");

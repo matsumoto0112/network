@@ -30,8 +30,9 @@ Player::Player(IShooter& bulletRegister, ICollisionRegister& collisionRegister)
     mCollisionRegister(collisionRegister) {
     Transform colliderTransform;
     colliderTransform.setParent(&mTransform);
+
     //’·‚³‚ð’²®
-    mBoxCollision->getOBB()->setLength(1, 2.0f);
+    mBoxCollision->getOBB()->setLength(Math::Vector3(1, 2, 1));
     colliderTransform.setPosition(Math::Vector3(0, 1, 0));
     mBoxCollision->setColliderTransform(colliderTransform);
     mCollisionRegister.registerCollision(mBoxCollision.get());

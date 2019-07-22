@@ -34,6 +34,7 @@ public:
     virtual void shoot(const Math::Vector3& position, const Math::Quaternion& rotate) override;
     virtual void shootByOpponent(const Math::Vector3& position, const Math::Quaternion& rotate);
     virtual void registerCollision(BoxCollision* collision) override;
+    virtual void removeCollision(BoxCollision* collision) override;
 private:
     std::unique_ptr<Player> mPlayer;
     std::unique_ptr<Enemy> mEnemy;

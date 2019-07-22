@@ -16,10 +16,13 @@ public:
     virtual void update(float delta) override;
     virtual void draw() override;
     virtual void hit(GameObject& other) override;
+    bool isAlive() const { return mIsAlive; }
 private:
     float mSpeed;
-    std::unique_ptr<Graphics::Model> mModel;
+    ICollisionRegister& mCollisionRegister;
+    std::shared_ptr<Graphics::Model> mModel;
     std::unique_ptr<BoxCollision> mCollision;
+    bool mIsAlive;
 };
 
 } //Main 
