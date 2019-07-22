@@ -8,13 +8,13 @@ CancelProc::CancelProc(CancelFunc cancelFunc)
 CancelProc::~CancelProc() {}
 
 LRESULT CancelProc::wndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam, BOOL* isReturn) {
-    if (msg != WM_COMMAND)return 0L;
-    if (LOWORD(wParam) != IDC_BUTTON_CANCEL) return 0L;
+    if (msg != WM_COMMAND)return FALSE;
+    if (LOWORD(wParam) != IDC_BUTTON_CANCEL) return FALSE;
     *isReturn = TRUE;
     mFunc();
     //ダイアログの終了メッセージを送る
     PostMessage(hWnd, WM_CLOSE, 0, 0);
-    return 0L;
+    return TRUE;
 }
 
 } //Window 

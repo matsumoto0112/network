@@ -8,8 +8,8 @@ ClientConnectProc::ClientConnectProc(ConnectFunc connectFunc)
 ClientConnectProc::~ClientConnectProc() {}
 
 LRESULT ClientConnectProc::wndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam, BOOL* isReturn) {
-    if (msg != WM_COMMAND) return 0L;
-    if (LOWORD(wParam) != IDC_BUTTON_CONNECT) return 0L;
+    if (msg != WM_COMMAND) return FALSE;
+    if (LOWORD(wParam) != IDC_BUTTON_CONNECT) return FALSE;
     *isReturn = TRUE;
     //アドレスとポート番号をダイアログから取得する
     std::string address;
@@ -17,7 +17,7 @@ LRESULT ClientConnectProc::wndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lP
     BOOL flag;
     int port = GetDlgItemInt(hWnd, IDC_EDIT_PORT, &flag, FALSE);
     mFunc(address, port);
-    return 0L;
+    return TRUE;
 }
 
 } //Window 

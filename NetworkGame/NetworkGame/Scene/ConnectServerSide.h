@@ -57,6 +57,8 @@ private:
     HWND mDlg; //!< ダイアログハンドル
     std::unique_ptr<Graphics::TextureString> mStr; //!< 表示するUI文字列
     std::unique_ptr<Network::GameServerThread> mServerThread; //!< サーバースレッド
+public:
+    static HWND DLGHANDLE;
 };
 
 } //Scene 

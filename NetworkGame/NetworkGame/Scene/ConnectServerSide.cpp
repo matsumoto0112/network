@@ -8,14 +8,18 @@
 #include "Device/Window/Procedure/CloseProc.h"
 #include "Device/Window/Procedure/DestroyProc.h"
 #include "Device/GameDevice.h"
+#include "Device/Window/Dialog/InitProc.h"
 #include "Resources/resource.h"
 #include "Device/Graphics/Camera/CameraManager.h"
 #include "Device/Graphics/String/TextureString.h"
 #include "Network/GameServerThread.h"
 #include "Define/Network.h"
 #include "Utility/Resource/ResourceManager.h"
+#include "Device/Window/Window.h"
 
 namespace Scene {
+
+HWND Scene::ConnectServerSide::DLGHANDLE = NULL;
 
 ConnectServerSide::ConnectServerSide()
     :mIsSceneEnd(false), mIsSelectConnect(false),
@@ -27,13 +31,17 @@ ConnectServerSide::ConnectServerSide()
     Window::DialogProcedures::mServerDlgProc.emplace_back(std::make_unique<Window::ServerConnectProc>(
         [&](int port) {puchConnectButton(port); }));
     Window::DialogProcedures::mServerDlgProc.emplace_back(std::make_unique<Window::CancelProc>(
-        [&]() {mIsSceneEnd = true; mIsSelectConnect = false; }));
+        [&]() {mIsSceneEnd = true; mIsSelectConnect = false; DLGHANDLE = NULL; }));
     Window::DialogProcedures::mServerDlgProc.emplace_back(std::make_unique<Window::DestroyProc>());
     Window::DialogProcedures::mServerDlgProc.emplace_back(std::make_unique<Window::CloseProc>());
-    mDlg = CreateDialog((HINSTANCE)GetModuleHandle(NULL),
-        (LPSTR)IDD_SERVER, NULL, (DLGPROC)Window::DialogProcedures::ServerDlgProc);
-    EnableMenuItem(GetSystemMenu(mDlg, NULL), SC_CLOSE, MF_GRAYED);
-    ShowWindow(mDlg, SW_SHOW);
+    //Window::DialogProcedures::mServerDlgProc.emplace_back(std::make_unique<Window::InitProc>());
+    HWND hWnd = Device::GameDevice::getInstance().getWindow().getHWND();
+    DLGHANDLE = CreateDialog((HINSTANCE)GetWindowLong(hWnd, GWL_HINSTANCE),
+        MAKEINTRESOURCE(IDD_SERVER), hWnd, (DLGPROC)Window::DialogProcedures::ServerDlgProc);
+    EnableMenuItem(GetSystemMenu(DLGHANDLE, NULL), SC_CLOSE, MF_GRAYED);
+    ShowWindow(DLGHANDLE, SW_SHOW);
+
+    //DLGHANDLE = mDlg;
 }
 
 ConnectServerSide::~ConnectServerSide() {

@@ -90,6 +90,7 @@
     <ClCompile Include="Device\Window\Dialog\DialogProcedures.cpp" />
     <ClCompile Include="Device\Window\Dialog\CancelProc.cpp" />
     <ClCompile Include="Device\Window\Dialog\ClientConnectProc.cpp" />
+    <ClCompile Include="Device\Window\Dialog\InitProc.cpp" />
     <ClCompile Include="Device\Window\Dialog\ServerConnectProc.cpp" />
     <ClCompile Include="Device\Window\Procedure\LeftButtonDownProc.cpp" />
     <ClCompile Include="Device\Window\Procedure\CloseProc.cpp" />
@@ -257,6 +258,7 @@
     <ClInclude Include="Device\Input\Mouse.h" />
     <ClInclude Include="Device\Window\Dialog\CancelProc.h" />
     <ClInclude Include="Device\Window\Dialog\ClientConnectProc.h" />
+    <ClInclude Include="Device\Window\Dialog\InitProc.h" />
     <ClInclude Include="Device\Window\Dialog\ServerConnectProc.h" />
     <ClInclude Include="Device\Window\Procedure\LeftButtonDownProc.h" />
     <ClInclude Include="Device\Window\Procedure\CloseProc.h" />

@@ -12,6 +12,9 @@
 #include "Device/Input/InputManager.h"
 #include "Device/Input/Mouse.h"
 
+#include "Scene/ConnectServerSide.h"
+#include "Device/Window/Window.h"
+
 Game::Game(const Math::Vector2& screenSize, bool isFullScreen, float fps)
     :mGameDevice(Device::GameDevice::getInstance()),
     mScreenSize(screenSize),
@@ -27,18 +30,28 @@ int Game::run() {
     if (!init()) {
         return -1;
     }
-    MSG msg;
+    MSG msg = {};
     //ÉÅÉCÉìÉãÅ[Év
-    while (isRunning() && !mGameDevice.isEnd()) {
+    while (true) {
+        if (!isRunning()) {
+            break;
+        }
+        if (mGameDevice.isEnd()) {
+            break;
+        }
         if (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE)) {
-            TranslateMessage(&msg);
-            DispatchMessage(&msg);
+            bool isProcced = !(Scene::ConnectServerSide::DLGHANDLE && IsDialogMessage(Scene::ConnectServerSide::DLGHANDLE, &msg));
+            if (isProcced) {
+                TranslateMessage(&msg);
+                DispatchMessage(&msg);
+            }
         }
         else {
             update(1.0f / mFPS);
             draw();
         }
     }
+
     finalize();
     return 0;
 }
