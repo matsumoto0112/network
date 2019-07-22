@@ -25,7 +25,6 @@ Bullet::Bullet(Transform transform, Tag tag, ICollisionRegister& collisionRegist
 }
 
 Bullet::~Bullet() {
-    mCollisionRegister.removeCollision(mCollision.get());
 }
 
 void Bullet::update(float delta) {
@@ -44,6 +43,7 @@ void Bullet::draw() {
 void Bullet::hit(GameObject& other) {
     if (other.getTag() == Tag::Wall) {
         mIsAlive = false;
+        mCollisionRegister.removeCollision(mCollision.get());
     }
 }
 
