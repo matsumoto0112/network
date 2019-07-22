@@ -4,6 +4,7 @@
 #include "Device/Graphics/GraphicsDeviceManager.h"
 #include "Define/Window.h"
 #include "Device/Input/InputManager.h"
+#include "Device/Window/Dialog/DialogWindow.h"
 
 namespace Device {
 
@@ -32,6 +33,23 @@ void GameDevice::finalize() {
     mMainWindow->quit();
 }
 
+bool GameDevice::processDialogs(MSG* msg) {
+    auto removeIt = std::remove_if(mRequiredProceccingDialogHandles.begin(), mRequiredProceccingDialogHandles.end(), [](auto&& dlg) {return dlg->isEnd(); });
+    mRequiredProceccingDialogHandles.erase(removeIt, mRequiredProceccingDialogHandles.end());
+    /*for (auto&& dlg : mRequiredProceccingDialogHandles) {
+        if (IsDialogMessage(dlg->getHandle(), &msg)) {
+            return true;
+        }
+    }*/
+    if (mRequiredProceccingDialogHandles.size() == 0)return false;
+    return mRequiredProceccingDialogHandles[0]->getHandle() && IsDialogMessage(mRequiredProceccingDialogHandles[0]->getHandle(), msg);
+}
+
+Window::DialogWindow& GameDevice::addDialog(std::unique_ptr<Window::DialogWindow> dlgWindow) {
+    mRequiredProceccingDialogHandles.emplace_back(std::move(dlgWindow));
+    return *mRequiredProceccingDialogHandles.back();
+}
+
 GameDevice::GameDevice() {
     const Math::Vector2 screenSize(
         static_cast<float>(Define::Window::WIDTH),
@@ -49,7 +67,6 @@ GameDevice::GameDevice() {
         false);
 
     mInputManager = std::make_unique<Input::InputManager>(*mMainWindow);
-
 }
 
 GameDevice::~GameDevice() {}

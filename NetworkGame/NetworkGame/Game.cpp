@@ -39,9 +39,12 @@ int Game::run() {
         if (mGameDevice.isEnd()) {
             break;
         }
+        //メッセージがあれば処理する
         if (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE)) {
-            bool isProcced = !(Scene::ConnectServerSide::DLGHANDLE && IsDialogMessage(Scene::ConnectServerSide::DLGHANDLE, &msg));
-            if (isProcced) {
+            //既にメッセージを処理済みかどうか判定する
+            bool alreadyProcessed = mGameDevice.processDialogs(&msg);
+            //処理が終わっていなければ処理する
+            if (!alreadyProcessed) {
                 TranslateMessage(&msg);
                 DispatchMessage(&msg);
             }

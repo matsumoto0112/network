@@ -3,12 +3,14 @@
 #pragma comment(linker, "/entry:mainCRTStartup")
 #pragma comment(linker,"/SUBSYSTEM:WINDOWS")
 
+#include <Windows.h>
 #include <vector>
 #include <memory>
 #include "Utility/Singleton.h"
 
 namespace Window {
 class Window;
+class DialogWindow;
 } //Window 
 namespace Graphics {
 class GraphicsDeviceManager;
@@ -56,6 +58,9 @@ public:
     * @brief 終了処理
     */
     void finalize();
+
+    bool processDialogs(MSG* msg);
+    Window::DialogWindow& addDialog(std::unique_ptr<Window::DialogWindow> dlgWindow);
 protected:
     /**
     * @brief コンストラクタ
@@ -70,6 +75,7 @@ private:
     WindowPtr mMainWindow; //!< メインウィンドウ
     GraphicsDevicePtr mGraphicsDevice; //!< グラフィックデバイス
     InputManagerPtr mInputManager; //!< 入力管理
+    std::vector<std::unique_ptr<Window::DialogWindow>> mRequiredProceccingDialogHandles;
 };
 
 } //Device 

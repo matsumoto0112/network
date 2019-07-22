@@ -3,6 +3,10 @@
 #include "Scene/IScene.h"
 #include <Windows.h>
 
+namespace Window {
+class DialogWindow;
+} //Window 
+
 namespace Network {
 class GameServerThread;
 } //Network 
@@ -54,11 +58,12 @@ private:
 private:
     bool mIsSceneEnd; //!< シーンが終了しているか
     bool mIsSelectConnect; //!< 接続を選択したか
-    HWND mDlg; //!< ダイアログハンドル
+    //HWND mDlg; //!< ダイアログハンドル
+    Window::DialogWindow& mDialog;
     std::unique_ptr<Graphics::TextureString> mStr; //!< 表示するUI文字列
     std::unique_ptr<Network::GameServerThread> mServerThread; //!< サーバースレッド
-public:
-    static HWND DLGHANDLE;
+//public:
+//    static HWND DLGHANDLE;
 };
 
 } //Scene 

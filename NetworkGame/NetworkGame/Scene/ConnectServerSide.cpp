@@ -16,30 +16,34 @@
 #include "Define/Network.h"
 #include "Utility/Resource/ResourceManager.h"
 #include "Device/Window/Window.h"
+#include "Device/Window/Dialog/DialogWindow.h"
 
 namespace Scene {
 
-HWND Scene::ConnectServerSide::DLGHANDLE = NULL;
-
 ConnectServerSide::ConnectServerSide()
     :mIsSceneEnd(false), mIsSelectConnect(false),
+    mDialog(Device::GameDevice::getInstance().addDialog(
+        std::make_unique<Window::DialogWindow>(&Device::GameDevice::getInstance().getWindow(),
+            IDD_SERVER, (DLGPROC)Window::DialogProcedures::ServerDlgProc))),
     mStr(std::make_unique<Graphics::TextureString>(
         Device::GameDevice::getInstance().getDirectX11Device(),
         "Connecting",
         14,
         "")) {
+    EnableMenuItem(GetSystemMenu(mDialog.getHandle(), NULL), SC_CLOSE, MF_GRAYED);
+
     Window::DialogProcedures::mServerDlgProc.emplace_back(std::make_unique<Window::ServerConnectProc>(
         [&](int port) {puchConnectButton(port); }));
     Window::DialogProcedures::mServerDlgProc.emplace_back(std::make_unique<Window::CancelProc>(
-        [&]() {mIsSceneEnd = true; mIsSelectConnect = false; DLGHANDLE = NULL; }));
+        [&]() {mIsSceneEnd = true; mIsSelectConnect = false;  }));
     Window::DialogProcedures::mServerDlgProc.emplace_back(std::make_unique<Window::DestroyProc>());
     Window::DialogProcedures::mServerDlgProc.emplace_back(std::make_unique<Window::CloseProc>());
+
     //Window::DialogProcedures::mServerDlgProc.emplace_back(std::make_unique<Window::InitProc>());
-    HWND hWnd = Device::GameDevice::getInstance().getWindow().getHWND();
-    DLGHANDLE = CreateDialog((HINSTANCE)GetWindowLong(hWnd, GWL_HINSTANCE),
-        MAKEINTRESOURCE(IDD_SERVER), hWnd, (DLGPROC)Window::DialogProcedures::ServerDlgProc);
-    EnableMenuItem(GetSystemMenu(DLGHANDLE, NULL), SC_CLOSE, MF_GRAYED);
-    ShowWindow(DLGHANDLE, SW_SHOW);
+    //HWND hWnd = Device::GameDevice::getInstance().getWindow().getHWND();
+    //DLGHANDLE = CreateDialog((HINSTANCE)GetWindowLong(hWnd, GWL_HINSTANCE),
+    //    MAKEINTRESOURCE(IDD_SERVER), hWnd, (DLGPROC)Window::DialogProcedures::ServerDlgProc);
+    //ShowWindow(DLGHANDLE, SW_SHOW);
 
     //DLGHANDLE = mDlg;
 }
@@ -81,7 +85,7 @@ void ConnectServerSide::puchConnectButton(int port) {
     fbx->importResource(Define::ModelType::Object, Define::ModelName::OBJECT_NAME);
     fbx->importResource(Define::ModelType::Enemy, Define::ModelName::ENEMY_NAME);
 
-    SendMessage(mDlg, WM_CLOSE, 0, 0);
+    mDialog.close();
 }
 
 } //Scene 
