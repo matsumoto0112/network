@@ -18,7 +18,6 @@ public:
     virtual void hit(GameObject& other) override;
     bool isAlive() const { return mIsAlive; }
 private:
-    float mSpeed;
     ICollisionRegister& mCollisionRegister;
     std::shared_ptr<Graphics::Model> mModel;
     std::unique_ptr<BoxCollision> mCollision;

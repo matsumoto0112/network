@@ -113,6 +113,7 @@
     <ClCompile Include="Main\MainObjectManager.cpp" />
     <ClCompile Include="Main\Player.cpp" />
     <ClCompile Include="Main\Stage.cpp" />
+    <ClCompile Include="Main\StatusDefine.cpp" />
     <ClCompile Include="Main\Wall.cpp" />
     <ClCompile Include="Network\GameClientThread.cpp" />
     <ClCompile Include="Network\GameServerThread.cpp" />
@@ -284,6 +285,7 @@
     <ClInclude Include="Main\IBulletRegister.h" />
     <ClInclude Include="Main\ICollisionRegister.h" />
     <ClInclude Include="Main\MainObjectManager.h" />
+    <ClInclude Include="Main\StatusDefine.h" />
     <ClInclude Include="Main\Tag.h" />
     <ClInclude Include="Main\Player.h" />
     <ClInclude Include="Main\Stage.h" />

@@ -45,13 +45,11 @@ std::unique_ptr<IScene> ConnectServerSide::end() {
 }
 
 void ConnectServerSide::puchConnectButton(int port) {
-    mMessage->setString("connect waiting...");
     mServerThread = std::make_unique<Network::GameServerThread>(Define::Network::MAX_BUFFER_SIZE, port);
 
     mServerThread->mConnectEvent = [&]() {
         mIsSceneEnd = true;
         mIsSelectConnect = true;
-        mMessage->setString("connect sucsess");
     };
 
     mServerThread->start();

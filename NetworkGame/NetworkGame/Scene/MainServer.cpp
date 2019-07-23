@@ -49,8 +49,18 @@ MainServer::MainServer(std::unique_ptr<Network::GameServerThread> serverThread)
         mServerThread->sendMessage(data);
     };
 
+    auto playerHittedEvent = [&](bool isDead) {
+        if (isDead) {
+            mIsSceneEnd = true;
+        }
+        Network::HitData data;
+        data.dead = isDead;
+        data.bulletID = 0;
+        mServerThread->sendMessage(data);
+    };
+
     mObjectManager = std::make_unique<Main::MainObjectManager>(sendShootDataToClientFunc);
-    mObjectManager->registerPlayer(std::make_unique<Main::Player>(*mObjectManager, *mObjectManager));
+    mObjectManager->registerPlayer(std::make_unique<Main::Player>(*mObjectManager, *mObjectManager, playerHittedEvent));
     mObjectManager->registerEnemy(std::make_unique<Main::Enemy>(*mObjectManager));
     mObjectManager->registerStage(std::make_unique<Main::Stage>(*mObjectManager));
 

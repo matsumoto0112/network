@@ -40,14 +40,26 @@ MainClient::MainClient(std::unique_ptr<Network::GameClientThread> clientThread)
 
     Utility::PixelShaderResourceStorage* psResourceManager = Utility::ResourceManager::getInstance().getPixelShader();
     psResourceManager->importResource(Define::PixelShaderType::RedModel, Define::PixelShaderName::RED_MODEL);
+
     auto sendShootDataToServerFunc = [&](const Math::Vector3& position, const Math::Quaternion& rotate) {
         Network::ShootData data;
         data.shotPosition = position;
         data.rotate = rotate;
         mClient->sendMessage(data);
     };
+
+    auto playerHittedEvent = [&](bool isDead) {
+        if (isDead) {
+            mIsSceneEnd = true;
+        }
+        Network::HitData data;
+        data.dead = isDead;
+        data.bulletID = 0;
+        mClient->sendMessage(data);
+    };
+
     mObjectManager = std::make_unique<Main::MainObjectManager>(sendShootDataToServerFunc);
-    mObjectManager->registerPlayer(std::make_unique<Main::Player>(*mObjectManager, *mObjectManager));
+    mObjectManager->registerPlayer(std::make_unique<Main::Player>(*mObjectManager, *mObjectManager, playerHittedEvent));
     mObjectManager->registerEnemy(std::make_unique<Main::Enemy>(*mObjectManager));
     mObjectManager->registerStage(std::make_unique<Main::Stage>(*mObjectManager));
 
@@ -78,7 +90,7 @@ void MainClient::update(float delta) {
     mClient->sendMessage(packet);
 
     std::list<std::string> recvMessages = mClient->getAllMessage();
-    
+
     for (auto&& mes : recvMessages) {
         std::stringstream ss(mes);
         Network::DataType type;

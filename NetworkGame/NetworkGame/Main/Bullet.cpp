@@ -7,11 +7,12 @@
 #include "Main/BoxCollision.h"
 #include "Main/ICollisionRegister.h"
 #include "Utility/Resource/ResourceManager.h"
+#include "Main/StatusDefine.h"
 
 namespace Main {
 
 Bullet::Bullet(Transform transform, Tag tag, ICollisionRegister& collisionRegister)
-    :GameObject(transform, tag), mSpeed(50.0f), mCollisionRegister(collisionRegister), mIsAlive(true),
+    :GameObject(transform, tag), mCollisionRegister(collisionRegister), mIsAlive(true),
     mCollision(std::make_unique<BoxCollision>(*this, Math::OBB3D())) {
     Transform colliderTransform;
     colliderTransform.setParent(&mTransform);
@@ -24,8 +25,7 @@ Bullet::Bullet(Transform transform, Tag tag, ICollisionRegister& collisionRegist
     mTransform.setPosition(mTransform.getPosition() + Math::Vector3(0, 0, -0.5f));
 }
 
-Bullet::~Bullet() {
-}
+Bullet::~Bullet() {}
 
 void Bullet::update(float delta) {
     //ê≥ñ Ç…å¸Ç©Ç¡ÇƒêiÇÒÇ≈Ç¢Ç≠
@@ -33,7 +33,7 @@ void Bullet::update(float delta) {
     Math::Quaternion r = Math::Quaternion::conjugate(mTransform.getRotate()) * q *  mTransform.getRotate();
     Math::Vector3 v(r.x, r.y, r.z);
 
-    mTransform.setPosition(mTransform.getPosition() + v * mSpeed * delta);
+    mTransform.setPosition(mTransform.getPosition() + v * StatusDefine::BULLET_SPEED * delta);
 }
 
 void Bullet::draw() {
@@ -41,7 +41,13 @@ void Bullet::draw() {
 }
 
 void Bullet::hit(GameObject& other) {
-    if (other.getTag() == Tag::Wall) {
+    auto isHitDeathObject = [](Tag otherTag) {
+        if (otherTag == Tag::Wall)return true;
+        if (otherTag == Tag::Player)return true;
+        if (otherTag == Tag::Enemy)return true;
+        return false;
+    };
+    if (isHitDeathObject(other.getTag())) {
         mIsAlive = false;
         mCollisionRegister.removeCollision(mCollision.get());
     }

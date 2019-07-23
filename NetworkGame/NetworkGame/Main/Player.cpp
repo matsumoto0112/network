@@ -19,15 +19,17 @@
 #include "Main/BoxCollision.h"
 #include "Define/Path.h"
 #include "Utility/Resource/ResourceManager.h"
+#include "Main/StatusDefine.h"
 
 namespace Main {
 
-Player::Player(IShooter& bulletRegister, ICollisionRegister& collisionRegister)
+Player::Player(IShooter& bulletRegister, ICollisionRegister& collisionRegister, HitEvent hitEvent)
     :GameObject(Transform(Math::Vector3(0, 0.0f, 0), Math::Quaternion(), Math::Vector3(3.0f, 3.0f, 3.0f)), Tag::Player),
     mBoxCollision(std::make_unique<BoxCollision>(*this, Math::OBB3D())),
     mPlayerCamera(Graphics::CameraManager::getInstance().getCamera<Graphics::FPSCamera>(Define::CameraType::ThreeD)),
     mBulletRegister(bulletRegister),
-    mCollisionRegister(collisionRegister) {
+    mCollisionRegister(collisionRegister),
+    mHP(StatusDefine::MAX_HP), mHitEvent(hitEvent) {
     Transform colliderTransform;
     colliderTransform.setParent(&mTransform);
 
@@ -96,6 +98,8 @@ void Player::draw() {
 void Player::hit(GameObject& other) {
     if (other.getTag() == Tag::OpponentBullet) {
         std::cout << "Hit\n";
+        mHP--;
+        mHitEvent(mHP <= 0);
     }
 }
 

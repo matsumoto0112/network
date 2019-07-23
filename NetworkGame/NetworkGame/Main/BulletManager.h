@@ -14,10 +14,6 @@ class BulletManager {
 public:
     BulletManager(ICollisionRegister& collisionRegister);
     ~BulletManager();
-    /**
-    * @brief オブジェクトの追加
-    * @details 次回update時に追加される
-    */
     void shoot(const Math::Vector3& position, const Math::Quaternion& rotate);
     void shootByOpponent(const Math::Vector3& position, const Math::Quaternion& rotate);
     void update(float delta);

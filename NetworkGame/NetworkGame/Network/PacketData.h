@@ -14,11 +14,12 @@ namespace Network {
 enum class DataType {
     Transform,
     Shot,
+    Hit,
 };
 
 /**
 * @class PacketDataBase
-* @brief discription
+* @brief パケットデータエンコードインターフェース
 */
 class IPacketDataEncoder {
 public:
@@ -28,7 +29,7 @@ public:
 
 /**
 * @class IPacketDataDecoder
-* @brief discription
+* @brief パケットデータエンコードインターフェース
 */
 class IPacketDataDecoder {
 public:
@@ -88,6 +89,31 @@ public:
         MY_ASSERTION((DataType)type == DataType::Shot, "違う形式のデータが渡されました");
         ss >> shotPosition.x >> shotPosition.y >> shotPosition.z;
         ss >> rotate.x >> rotate.y >> rotate.z >> rotate.w;
+    }
+};
+
+/**
+* @class HitData
+* @brief discription
+*/
+class HitData : public IPacketDataEncoder, public IPacketDataDecoder {
+public:
+    bool dead;
+    int bulletID;
+public:
+    virtual std::string encode() const override {
+        std::stringstream ss;
+        ss << (int)DataType::Hit << " ";
+        ss << dead << " " << bulletID;
+        return ss.str();
+    }
+
+    virtual void decode(const std::string& mes) override {
+        std::stringstream ss(mes);
+        int type;
+        ss >> type;
+        MY_ASSERTION((DataType)type == DataType::Hit, "違う形式のデータが渡されました");
+        ss >> dead >> bulletID;
     }
 };
 

@@ -15,8 +15,14 @@ class IShooter;
 class ICollisionRegister;
 
 class Player : public GameObject {
+private:
+    /**
+    * @brief ’e‚É“–‚½‚Á‚½Žž‚ÌƒCƒxƒ“ƒg
+    * @param isDead Ž€–S‚µ‚½‚çtrue
+    */
+    using HitEvent = std::function<void(bool isDead)>;
 public:
-    Player(IShooter& bulletRegister, ICollisionRegister& collisionRegister);
+    Player(IShooter& bulletRegister, ICollisionRegister& collisionRegister, HitEvent hitEvent);
     ~Player();
     virtual void update(float delta) override;
     virtual void draw() override;
@@ -27,6 +33,8 @@ private:
     Graphics::FPSCamera& mPlayerCamera;
     IShooter& mBulletRegister;
     ICollisionRegister& mCollisionRegister;
+    int mHP;
+    HitEvent mHitEvent;
 };
 
 } //Main 
