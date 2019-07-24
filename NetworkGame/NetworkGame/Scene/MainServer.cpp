@@ -137,9 +137,6 @@ void MainServer::draw() {
 }
 
 std::unique_ptr<IScene> MainServer::end() {
-    if (mIsDisconnect) {
-        return std::make_unique<Title>();
-    }
     return std::make_unique<Result>(mWin);
 }
 

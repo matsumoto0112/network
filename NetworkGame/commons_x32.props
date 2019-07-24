@@ -22,7 +22,7 @@
       <ShaderModel>5.1</ShaderModel>
     </FxCompile>
     <Link>
-      <AdditionalLibraryDirectories>$(ProjectDir)Include\FBXSDK\lib\vs2015\x64\release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(ProjectDir)Include\FBXSDK\lib\vs2015\x86\release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>libfbxsdk-mt.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
