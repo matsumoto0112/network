@@ -31,6 +31,7 @@ private:
     std::unique_ptr<Graphics::Sprite2D> mReticule;
     bool mIsSceneEnd;
     bool mWin;
+    bool mIsDisconnect;
 };
 
 } //Scene 

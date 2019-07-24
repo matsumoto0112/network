@@ -10,7 +10,7 @@ Input::KeyCode cast(Input::MouseButton button) {
 }
 
 Math::Vector2 toVector2(const POINT& pos) {
-    return Math::Vector2(pos.x, pos.y);
+    return Math::Vector2((float)pos.x, (float)pos.y);
 }
 
 POINT toPoint(const Math::Vector2& pos) {

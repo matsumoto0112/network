@@ -41,8 +41,8 @@ bool createWindow(HWND* hWnd,
     //ウインドウ背景色
     wcex.hbrBackground = (HBRUSH)(COLOR_WINDOW - 1);
     //デフォルトメニュー名
-    //wcex.lpszMenuName = NULL;
-    wcex.lpszMenuName = MAKEINTRESOURCE(IDR_MENU1);
+    wcex.lpszMenuName = NULL;
+    //wcex.lpszMenuName = MAKEINTRESOURCE(IDR_MENU1);
     //ウインドウクラスにつける名前
     wcex.lpszClassName = name;
     //16×16の小さいサイズのアイコン

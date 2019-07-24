@@ -2,6 +2,10 @@
 #include <string>
 namespace Define {
 
+/**
+* @enum PixelShaderType
+* @brief ピクセルシェーダの種類定義
+*/
 enum class PixelShaderType {
     Default2D,
     OnlyPosition,

@@ -25,6 +25,7 @@
 #include "Main/Player.h"
 #include "Main/Stage.h"
 #include "Resources/resource.h"
+#include "Scene/Title.h"
 #include "Scene/Result.h"
 #include "Utility/Resource/ResourceManager.h"
 
@@ -34,7 +35,7 @@ MainClient::MainClient(std::unique_ptr<Network::GameClientThread> clientThread)
     :mClient(std::move(clientThread)),
     mStr(std::make_unique<Graphics::TextureString>(
         Device::GameDevice::getInstance().getDirectX11Device(), "Client Side", 14, "")),
-    mIsSceneEnd(false) {
+    mIsSceneEnd(false), mIsDisconnect(false) {
 
     Utility::PixelShaderResourceStorage* psResourceManager = Utility::ResourceManager::getInstance().getPixelShader();
     psResourceManager->importResource(Define::PixelShaderType::RedModel, Define::PixelShaderName::RED_MODEL);
@@ -67,7 +68,7 @@ MainClient::MainClient(std::unique_ptr<Network::GameClientThread> clientThread)
     mReticule = std::make_unique<Graphics::Sprite2D>(Device::GameDevice::getInstance().getDirectX11Device(), tex);
     mReticule->setPosition(Define::Window::getSize() * 0.5f);
 
-    mClient->setDisconnectEvent([&]() {mIsSceneEnd = true; });
+    mClient->setDisconnectEvent([&]() {mIsSceneEnd = true; mIsDisconnect = true; });
 
 }
 
@@ -138,6 +139,9 @@ void MainClient::draw() {
 
 std::unique_ptr<IScene> MainClient::end() {
     mClient->end();
+    if (mIsDisconnect) {
+        return std::make_unique<Title>();
+    }
     return std::make_unique<Result>(mWin);
 }
 } //Scene 

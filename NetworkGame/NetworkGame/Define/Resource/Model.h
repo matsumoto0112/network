@@ -4,7 +4,7 @@ namespace Define {
 
 /**
 * @enum ModelTYpe
-* @brief description
+* @brief モデルの種類定義
 */
 enum class ModelType {
     Floor,
@@ -15,7 +15,7 @@ enum class ModelType {
 
 /**
 * @class ModelName
-* @brief discription
+* @brief モデルのリソース名定義
 */
 class ModelName {
 public:

@@ -26,6 +26,7 @@
 #include "Main/Player.h"
 #include "Main/Stage.h"
 #include "Resources/resource.h"
+#include "Scene/Title.h"
 #include "Scene/Result.h"
 #include "Utility/Resource/ResourceManager.h"
 
@@ -35,7 +36,7 @@ MainServer::MainServer(std::unique_ptr<Network::GameServerThread> serverThread)
     :mServerThread(std::move(serverThread)),
     mStr(std::make_unique<Graphics::TextureString>(
         Device::GameDevice::getInstance().getDirectX11Device(), "Server Side", 14, "")),
-    mIsSceneEnd(false) {
+    mIsSceneEnd(false),mIsDisconnect(false) {
     Utility::PixelShaderResourceStorage* psResourceManager = Utility::ResourceManager::getInstance().getPixelShader();
     psResourceManager->importResource(Define::PixelShaderType::RedModel, Define::PixelShaderName::RED_MODEL);
 
@@ -67,7 +68,7 @@ MainServer::MainServer(std::unique_ptr<Network::GameServerThread> serverThread)
     mReticule = std::make_unique<Graphics::Sprite2D>(Device::GameDevice::getInstance().getDirectX11Device(), tex);
     mReticule->setPosition(Define::Window::getSize() * 0.5f);
 
-    mServerThread->setDisconnectEvent([&]() {mIsSceneEnd = true; });
+    mServerThread->setDisconnectEvent([&]() {mIsSceneEnd = true; mIsDisconnect = true; });
 }
 
 MainServer::~MainServer() {}
@@ -136,6 +137,9 @@ void MainServer::draw() {
 }
 
 std::unique_ptr<IScene> MainServer::end() {
+    if (mIsDisconnect) {
+        return std::make_unique<Title>();
+    }
     return std::make_unique<Result>(mWin);
 }
 

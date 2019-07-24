@@ -2,6 +2,10 @@
 #include <string>
 namespace Define {
 
+/**
+* @enum VertexShaderType
+* @brief 頂点シェーダ種類定義
+*/
 enum class VertexShaderType {
     Default2D,
     OnlyPosition,

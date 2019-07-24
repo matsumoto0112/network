@@ -58,8 +58,18 @@ public:
     * @brief 終了処理
     */
     void finalize();
-
+    /**
+    * @brief ダイアログの処理をする
+    * @param mes ダイアログのメッセージがあればそれを処理した結果を返す
+    * @return ダイアログのメッセージを処理したらtrue
+    */
     bool processDialogs(MSG* msg);
+    /**
+    * @brief ダイアログウィンドウを追加する
+    * @param dlgWindow ダイアログウィンドウ
+    * @return 追加したウィンドウへの参照
+    * @details ダイアログの終了時にはDialogWindow::closeを呼べばよい
+    */
     Window::DialogWindow& addDialog(std::unique_ptr<Window::DialogWindow> dlgWindow);
 protected:
     /**
@@ -75,7 +85,7 @@ private:
     WindowPtr mMainWindow; //!< メインウィンドウ
     GraphicsDevicePtr mGraphicsDevice; //!< グラフィックデバイス
     InputManagerPtr mInputManager; //!< 入力管理
-    std::vector<std::unique_ptr<Window::DialogWindow>> mRequiredProceccingDialogHandles;
+    std::vector<std::unique_ptr<Window::DialogWindow>> mDlgWindows;
 };
 
 } //Device 
