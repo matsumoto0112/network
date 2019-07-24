@@ -31,7 +31,17 @@ namespace Scene {
 Title::Title()
     : mIsEnd(false), mSelectServer(false),
     mStr(std::make_unique<Graphics::TextureString>(
-        Device::GameDevice::getInstance().getDirectX11Device(), "TITLE", 14, "")) {}
+        Device::GameDevice::getInstance().getDirectX11Device(), "TITLE", 14, "")) {
+    Graphics::GraphicsDeviceManager& device = Device::GameDevice::getInstance().getDirectX11Device();
+
+    auto ui = std::make_unique<Graphics::TextureString>(device, "Server Side push S", 42, "");
+    ui->setPosition(Math::Vector2(100, 300));
+    mUIStrs[0] = std::move(ui);
+
+    ui = std::make_unique<Graphics::TextureString>(device, "Client Side push C", 42, "");
+    ui->setPosition(Math::Vector2(100, 400));
+    mUIStrs[1] = std::move(ui);
+}
 
 Title::~Title() {}
 
@@ -56,6 +66,9 @@ bool Title::isEndScene() const {
 void Title::draw() {
     Graphics::CameraManager::getInstance().setRenderingCamera(Define::CameraType::UI);
     mStr->draw();
+    for (auto&& str : mUIStrs) {
+        str->draw();
+    }
 }
 
 std::unique_ptr<IScene> Title::end() {

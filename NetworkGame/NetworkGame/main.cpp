@@ -50,9 +50,6 @@
 
 #include "Device/Window/Dialog/DialogProcedures.h"
 
-using namespace Graphics;
-using namespace Math;
-
 #pragma comment(lib , "WSock32.lib")
 
 class MyGame : public Game {
@@ -64,6 +61,10 @@ private:
         if (!Game::init()) {
             return false;
         }
+
+        using namespace Math;
+        using namespace Graphics;
+
         auto& window = mGameDevice.getWindow();
         HWND hWnd = window.getHWND();
         window.setProcedureEvent(new Window::DestroyProc());
@@ -112,7 +113,7 @@ private:
                 std::make_unique<Graphics::TextureString>(device, "0", 28, ""));
         mFPSStr.second->setZOrder(-1.0f);
         mAxisDrawer = std::make_pair<bool, std::unique_ptr<Utility::AxisDrawer>>(
-            true,
+            false,
             std::make_unique<Utility::AxisDrawer>());
 
         Input::Mouse& mouse = mGameDevice.getInputManager().getMouse();
@@ -129,9 +130,6 @@ private:
         if (mouse.getMouseDown(Input::MouseButton::Right)) {
             mouse.setCursorMode(Input::CursorMode::Show);
         }
-        //if (!mGameDevice.getWindow().isActive()) {
-        //    mouse.setCursorMode(Input::CursorMode::Show);
-        //}
 
         mSceneManager->update(deltaTime);
         if (mFPSStr.first) {

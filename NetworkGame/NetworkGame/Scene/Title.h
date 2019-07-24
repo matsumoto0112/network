@@ -1,5 +1,6 @@
 #pragma once
 
+#include <array>
 #include "Scene/IScene.h"
 
 namespace Graphics {
@@ -20,6 +21,7 @@ private:
     bool mIsEnd;
     bool mSelectServer;
     std::unique_ptr<Graphics::TextureString> mStr;
+    std::array<std::unique_ptr<Graphics::TextureString>, 2> mUIStrs;
 };
 
 } //Graphics 
