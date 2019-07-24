@@ -43,7 +43,6 @@ void Bullet::draw() {
 void Bullet::hit(GameObject& other) {
     auto isHitDeathObject = [](Tag otherTag) {
         if (otherTag == Tag::Wall)return true;
-        if (otherTag == Tag::Player)return true;
         if (otherTag == Tag::Enemy)return true;
         return false;
     };

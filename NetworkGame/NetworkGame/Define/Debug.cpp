@@ -2,7 +2,7 @@
 
 namespace Define {
 
-const bool Debug::ENABLE_DEBUG_WINDOW = true;
+const bool Debug::ENABLE_DEBUG_WINDOW = false;
 const int Debug::DEBUG_WINDOW_WIDTH = 400;
 const int Debug::DEBUG_WINDOW_HEIGHT = 600;
 const int Debug::DEBUG_WINDOW_POSITION_X = 900;
