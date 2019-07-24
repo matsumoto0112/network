@@ -25,7 +25,7 @@
 #include "Main/Enemy.h"
 #include "Scene/Title.h"
 #include "Main/MainObjectManager.h"
-
+#include "Scene/Result.h"
 #include "Device/Graphics/Shader/Effect.h"
 #include "Device/Graphics/Render/IRenderModeChanger.h"
 #include "Resources/resource.h"
@@ -52,6 +52,7 @@ MainServer::MainServer(std::unique_ptr<Network::GameServerThread> serverThread)
     auto playerHittedEvent = [&](bool isDead) {
         if (isDead) {
             mIsSceneEnd = true;
+            mWin = false;
         }
         Network::HitData data;
         data.dead = isDead;
@@ -86,6 +87,16 @@ void MainServer::update(float delta) {
         mObjectManager->shootByOpponent(recieve.shotPosition, recieve.rotate);
     };
 
+    auto recieveHitData = [&](const std::string& mes) {
+        Network::HitData recieve;
+        recieve.decode(mes);
+        if (recieve.dead) {
+            mIsSceneEnd = true;
+            mWin = true;
+        }
+    };
+
+
     mObjectManager->update(delta);
     Network::TransformData data = mObjectManager->createTransformData();
     mServerThread->sendMessage(data);
@@ -103,6 +114,9 @@ void MainServer::update(float delta) {
             break;
         case Network::DataType::Shot:
             recieveShootData(ss.str());
+            break;
+        case Network::DataType::Hit:
+            recieveHitData(ss.str());
             break;
         default:
             break;
@@ -125,7 +139,7 @@ void MainServer::draw() {
 }
 
 std::unique_ptr<IScene> MainServer::end() {
-    return std::make_unique<Title>();
+    return std::make_unique<Result>(mWin);
 }
 
 } //Scene 

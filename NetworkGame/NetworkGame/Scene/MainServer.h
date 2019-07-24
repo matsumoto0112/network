@@ -30,6 +30,7 @@ private:
     std::unique_ptr<Main::MainObjectManager> mObjectManager;
     std::unique_ptr<Graphics::Sprite2D> mReticule;
     bool mIsSceneEnd;
+    bool mWin;
 };
 
 } //Scene 

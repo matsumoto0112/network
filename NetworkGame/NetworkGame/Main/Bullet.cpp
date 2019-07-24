@@ -41,9 +41,10 @@ void Bullet::draw() {
 }
 
 void Bullet::hit(GameObject& other) {
-    auto isHitDeathObject = [](Tag otherTag) {
+    auto isHitDeathObject = [&](Tag otherTag) {
         if (otherTag == Tag::Wall)return true;
-        if (otherTag == Tag::Enemy)return true;
+        if (otherTag == Tag::Enemy && mTag == Tag::PlayerBullet)return true;
+        if (otherTag == Tag::Player && mTag == Tag::OpponentBullet)return true;
         return false;
     };
     if (isHitDeathObject(other.getTag())) {

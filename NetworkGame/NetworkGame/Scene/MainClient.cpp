@@ -20,6 +20,7 @@
 #include "Device/Input/Mouse.h"
 #include "Main/Enemy.h"
 #include "Scene/Title.h"
+#include "Scene/Result.h"
 #include "Device/Window/Window.h"
 #include "Resources/resource.h"
 #include "Main/MainObjectManager.h"
@@ -51,6 +52,7 @@ MainClient::MainClient(std::unique_ptr<Network::GameClientThread> clientThread)
     auto playerHittedEvent = [&](bool isDead) {
         if (isDead) {
             mIsSceneEnd = true;
+            mWin = false;
         }
         Network::HitData data;
         data.dead = isDead;
@@ -71,8 +73,8 @@ MainClient::MainClient(std::unique_ptr<Network::GameClientThread> clientThread)
     mClient->setDisconnectEvent([&]() {mIsSceneEnd = true; });
 
 }
-MainClient::~MainClient() {}
 
+MainClient::~MainClient() {}
 
 void MainClient::update(float delta) {
     auto recieveTransformData = [&](const std::string& mes) {
@@ -84,6 +86,15 @@ void MainClient::update(float delta) {
         Network::ShootData recieve;
         recieve.decode(mes);
         mObjectManager->shootByOpponent(recieve.shotPosition, recieve.rotate);
+    };
+
+    auto recieveHitData = [&](const std::string& mes) {
+        Network::HitData recieve;
+        recieve.decode(mes);
+        if (recieve.dead) {
+            mIsSceneEnd = true;
+            mWin = true;
+        }
     };
 
     Network::TransformData packet = mObjectManager->createTransformData();
@@ -103,6 +114,9 @@ void MainClient::update(float delta) {
             break;
         case Network::DataType::Shot:
             recieveShootData(ss.str());
+            break;
+        case Network::DataType::Hit:
+            recieveHitData(ss.str());
             break;
         default:
             break;
@@ -127,6 +141,6 @@ void MainClient::draw() {
 
 std::unique_ptr<IScene> MainClient::end() {
     mClient->end();
-    return std::make_unique<Title>();
+    return std::make_unique<Result>(mWin);
 }
 } //Scene 
